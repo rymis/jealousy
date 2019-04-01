@@ -1,0 +1,49 @@
+<!DOCTYPE html5>
+<html>
+    <head>
+        <title>Test template</title>
+        <script src="render_template.js"></script>
+<style>
+.mytable tr:nth-child(even) {
+    background-color: #ccc;
+}
+
+#tbl2 {
+    font-style: italic;
+}
+
+</style>
+    </head>
+    <body>
+        <div style="display:none">
+            <table id="tmpl-table" class="mytable" data-arguments="name, count">
+                <tr><th>#</th><th>random1</th><th>random2</th></tr>
+                <tr data-for="var i = 0; i < count; i++">
+                    <td>N${i}</td>
+                    <td>${name} ${col()}</td>
+                    <td>${Math.round(Math.random() * 100)}</td>
+                </tr>
+            </table>
+        </div>
+        <div id="container1"></div>
+        <div id="container2"></div>
+
+        <script>
+            function col() {
+                var x = Math.random();
+                var node = document.createElement("span");
+                node.appendChild(document.createTextNode(x.toString()));
+                if (x > 0.8) {
+                    node.setAttribute("style", "color:red");
+                } else if (x > 0.5) {
+                    node.setAttribute("style", "color:yellow");
+                } else {
+                    node.setAttribute("style", "color:green");
+                }
+                return node;
+            }
+            renderTemplate("#container1", "#tmpl-table", "First", 3);
+            renderTemplate("#container2", "#tmpl-table", "Second", 13).setAttribute("id", "tbl2");
+        </script>
+    </body>
+</html>
