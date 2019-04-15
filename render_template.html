@@ -16,10 +16,10 @@
     </head>
     <body>
         <div style="display:none">
-            <table id="tmpl-table" class="mytable" data-arguments="name, count">
-                <tr><th>#</th><th>random1</th><th>random2</th></tr>
+            <table data-return="table" id="tmpl-table" class="mytable" data-arguments="name, count">
+                <tr><th data-return="num">#</th><th>random1</th><th>random2</th></tr>
                 <tr data-for="var i = 0; i < count; i++">
-                    <td>N${i}</td>
+                    <td data-return="nnn">N${i}</td>
                     <td>${name} ${col()}</td>
                     <td>${Math.round(Math.random() * 100)}</td>
                 </tr>
@@ -43,7 +43,10 @@
                 return node;
             }
             renderTemplate("#container1", "#tmpl-table", "First", 3);
-            renderTemplate("#container2", "#tmpl-table", "Second", 13).setAttribute("id", "tbl2");
+            var x = renderTemplate("#container2", "#tmpl-table", "Second", 13);
+            x.table.setAttribute("id", "tbl2");
+            x.num.setAttribute("style", "color:red");
+            x.nnn.setAttribute("style", "color:green");
         </script>
     </body>
 </html>
