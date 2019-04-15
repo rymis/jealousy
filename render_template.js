@@ -11,6 +11,8 @@
 // It is possible to use following data- attributes for rendering control:
 // 1. data-arguments - list of arguments for rendering.
 // 2. data-for - generate node using for loop. Attribute value will be placed inside for braces.
+// 3. data-return - assing this node to the field with specified name in return object. In loops value
+//    will be overriden and it is not possible to return array now.
 // In attribute values and text nodes it is possible to insert result of any code execution inside ${}.
 // And in text node if result of ${} is instance of Element it would be added directly instead of TextNode
 // so you can use custom elements inside templates.
@@ -111,10 +113,11 @@ function renderTemplate(container, template) {
     }
 
     var skip = {
-        "data-code": true,
-        "data-for": true,
-        "data-arguments": true,
-        "id": true // id should be unique
+        "data-code": true,      // precompiled code
+        "data-for": true,       // for loop definition
+        "data-arguments": true, // arguments for the function
+        "data-return": true,    // return values for the function
+        "id": true              // id should be unique
     }
 
     // Now we will generate renderer.
@@ -126,6 +129,9 @@ function renderTemplate(container, template) {
             }
 
             func = func + "_nodeStack.push(document.createElement(\"" + node.tagName + "\"));";
+            if (node.hasAttribute("data-return")) {
+                func = func + "_result[" + JSON.stringify(node.getAttribute("data-return")) + "]=_nodeStack[_nodeStack.length-1];"
+            }
 
             // Process attributes:
             for (var i = 0; i < node.attributes.length; i++) {
@@ -156,7 +162,7 @@ function renderTemplate(container, template) {
         return func;
     }
 
-    eval("function r(" + args + ") {var _nodeStack=[_rootNode];" + genRenderer(template) + ";return _rootNode.firstChild;}");
+    eval("function r(" + args + ") {var _nodeStack=[_rootNode];var _result={};" + genRenderer(template) + ";return _result;}");
 
     var rndName = "code_" + Object.keys(renderTemplateStorage).length + "_" + Math.round(Math.random() * 100000);
     renderTemplateStorage[rndName] = r;
