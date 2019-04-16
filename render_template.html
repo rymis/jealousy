@@ -24,11 +24,23 @@
                     <td>${Math.round(Math.random() * 100)}</td>
                 </tr>
             </table>
+
+            <li id="tmpl-li" data-return="li" data-for="var i = 0; i < 10; i++">${Math.random()}</li>
         </div>
         <div id="container1"></div>
         <div id="container2"></div>
 
+        <ol id="container3"></ol>
+
         <script>
+            function rndCol(el) {
+                var r = Math.round(Math.random() * 9.9);
+                var g = Math.round(Math.random() * 9.9);
+                var b = Math.round(Math.random() * 9.9);
+                var c = r.toString() + g.toString() + b.toString();
+                el.setAttribute("style", "color:#" + c);
+            }
+
             function col() {
                 var x = Math.random();
                 var node = document.createElement("span");
@@ -44,9 +56,17 @@
             }
             renderTemplate("#container1", "#tmpl-table", "First", 3);
             var x = renderTemplate("#container2", "#tmpl-table", "Second", 13);
+
             x.table.setAttribute("id", "tbl2");
             x.num.setAttribute("style", "color:red");
-            x.nnn.setAttribute("style", "color:green");
+            for (var i = 0; i < x.nnn.length; i++) {
+                rndCol(x.nnn[i]);
+            }
+
+            var l = renderTemplate("#container3", "#tmpl-li");
+            for (var i = 0; i < l.li.length; i++) {
+                rndCol(l.li[i]);
+            }
         </script>
     </body>
 </html>
