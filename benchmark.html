@@ -1,0 +1,84 @@
+<!DOCTYPE html5>
+<html>
+    <head>
+        <title>Benchmark</title>
+        <script src="render_template.js"></script>
+    </head>
+    <body>
+        <table width="50%">
+            <tr>
+                <td>renderTemplate first time</td>
+                <td id="render-template-1"></td>
+            </tr>
+
+            <tr>
+                <td>renderTemplate second time</td>
+                <td id="render-template-2"></td>
+            </tr>
+
+            <tr>
+                <td>Manual render</td>
+                <td id="manual"></td>
+            </tr>
+
+        </table>
+        <div style="display:none">
+            <table id="tmpl-table" class="mytable">
+                <tr data-for="var i = 0; i < 1000; i++">
+                    <td>Line ${i}</td>
+                    <td>
+                        <ul>
+                            <li data-for="var j = 0; j <= i; j++">LI ${j}</li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <script>
+            function stat(id, time) {
+                var el = document.getElementById(id);
+                el.innerHTML = "Time: " + time.toString() + "ms";
+            }
+
+            var container = document.createElement("div");
+
+            function bench(id, f) {
+                var b = new Date();
+                f();
+                var e = new Date();
+                var d = e.getTime() - b.getTime();
+                container.innerHTML = "";
+                stat(id, d);
+            }
+
+            function manual(el) {
+                var table = document.createElement("table");
+                table.classList.add("mytable");
+                var tbody = document.createElement("tbody");
+                table.appendChild(tbody);
+                for (var i = 0; i < 1000; i++) {
+                    var tr = document.createElement("tr");
+                    var td1 = document.createElement("td");
+                    td1.appendChild(document.createTextNode("Line " + i.toString()));
+                    tr.appendChild(td1);
+                    var td2 = document.createElement("td");
+                    var ul = document.createElement("ul");
+                    for (var j = 0; j <= i; j++) {
+                        var li = document.createElement("li");
+                        li.appendChild(document.createTextNode("LI " + j.toString()));
+                        ul.appendChild(li);
+                    }
+                    td2.appendChild(ul);
+                    tr.appendChild(td2);
+                    tbody.appendChild(tr);
+                }
+            }
+
+            bench("render-template-1", function () { renderTemplate(container, "#tmpl-table"); });
+            bench("render-template-2", function () { renderTemplate(container, "#tmpl-table"); });
+            bench("manual", function () { manual(container); });
+
+        </script>
+    </body>
+</html>
