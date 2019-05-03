@@ -1,4 +1,4 @@
 #!/bin/sh
 
-cat render_template.js unittest.js | nodejs
+cat render_template.js unittest.js | node
 
