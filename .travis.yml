@@ -3,5 +3,6 @@ os:
 - linux
 
 script:
+- "ls /usr/bin"
 - "./run_tests.sh"
 
