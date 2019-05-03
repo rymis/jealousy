@@ -3,7 +3,5 @@ os:
 - linux
 
 script:
-- "echo 'no need to build'"
-
-test:
 - "./run_tests.sh"
+
