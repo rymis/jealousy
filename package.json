@@ -1,0 +1,13 @@
+{
+    "author": "Mikhail Ryzhov <rymiser@gmail.com>",
+    "name": "jealousy",
+    "version": "0.1.0",
+    "main": "render_template.js",
+    "description": "Simple JS functions",
+    "scripts": {
+        "test": "./run_tests.sh"
+    },
+    "keywords": ["template"],
+    "license": "BSD2",
+    "homepage": "https://github.org/rymis/jealousy"
+}
